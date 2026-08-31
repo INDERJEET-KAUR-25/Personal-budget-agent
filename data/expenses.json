@@ -1,0 +1,15 @@
+{
+    "months": {
+        "2026-08": {
+            "budget": 15000,
+            "expenses": [
+                {
+                    "item": "groceries",
+                    "amount": 1000.0,
+                    "category": "Food",
+                    "date": "2026-08-31"
+                }
+            ]
+        }
+    }
+}

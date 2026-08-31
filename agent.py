@@ -23,10 +23,7 @@ load_dotenv()
 # Budget Memory
 # ============================================================
 
-memory = BudgetMemory()
-
-# Initial budget for the assignment demo
-memory.set_budget(15000)
+memory = BudgetMemory(15000)
 
 def reset_budget():
     global memory
