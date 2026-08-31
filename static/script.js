@@ -3,6 +3,13 @@ const sendButton = document.getElementById("send-button");
 const chatBox = document.getElementById("chat-box");
 
 
+function formatRupees(amount) {
+
+    return "₹" + Number(amount).toLocaleString("en-IN");
+
+}
+
+
 function addMessage(message, type) {
 
     const container = document.createElement("div");
@@ -26,6 +33,7 @@ function addMessage(message, type) {
 
 
     container.appendChild(avatar);
+
     container.appendChild(bubble);
 
     chatBox.appendChild(container);
@@ -33,6 +41,16 @@ function addMessage(message, type) {
 
     chatBox.scrollTop =
         chatBox.scrollHeight;
+
+}
+
+
+function quickPrompt(message) {
+
+    input.value = message;
+
+    sendMessage();
+
 }
 
 
@@ -86,20 +104,18 @@ async function sendMessage() {
         );
 
 
-        // Update dashboard
-        // directly from BudgetMemory
-
         await loadSummary();
 
 
     } catch (error) {
 
+        console.error(error);
+
+
         addMessage(
-            "Sorry, something went wrong while connecting to the budget agent.",
+            "Sorry, I couldn't connect to the budget agent.",
             "bot"
         );
-
-        console.error(error);
 
     }
 
@@ -107,6 +123,7 @@ async function sendMessage() {
     sendButton.disabled = false;
 
     sendButton.textContent = "Send";
+
 }
 
 
@@ -122,33 +139,46 @@ async function loadSummary() {
             await response.json();
 
 
+        const budget =
+            Number(data.budget);
+
+
+        const spent =
+            Number(data.total_spent);
+
+
+        const remaining =
+            Number(data.remaining_budget);
+
+
+        const percentage =
+            budget > 0
+                ? Math.round(
+                    (spent / budget) * 100
+                )
+                : 0;
+
+
         /*
-         * Update summary cards
+         * Summary cards
          */
+
+        document.getElementById(
+            "total-budget"
+        ).textContent =
+            formatRupees(budget);
+
 
         document.getElementById(
             "total-spent"
         ).textContent =
-            "₹" + data.total_spent.toLocaleString("en-IN");
+            formatRupees(spent);
 
 
         document.getElementById(
             "remaining-budget"
         ).textContent =
-            "₹" + data.remaining_budget.toLocaleString("en-IN");
-
-
-        /*
-         * Update spending percentage
-         */
-
-        const percentage =
-            data.budget > 0
-                ? Math.round(
-                    (data.total_spent /
-                    data.budget) * 100
-                )
-                : 0;
+            formatRupees(remaining);
 
 
         document.getElementById(
@@ -158,7 +188,39 @@ async function loadSummary() {
 
 
         /*
-         * Update donut chart
+         * Budget overview
+         */
+
+        document.getElementById(
+            "percentage-center"
+        ).textContent =
+            percentage + "%";
+
+
+        document.getElementById(
+            "spent-overview"
+        ).textContent =
+            formatRupees(spent);
+
+
+        document.getElementById(
+            "remaining-overview"
+        ).textContent =
+            formatRupees(remaining);
+
+
+        /*
+         * Progress bar
+         */
+
+        document.getElementById(
+            "progress-fill"
+        ).style.width =
+            Math.min(percentage, 100) + "%";
+
+
+        /*
+         * Donut chart
          */
 
         const degrees =
@@ -175,31 +237,44 @@ async function loadSummary() {
 
 
         /*
-         * Update category totals
+         * Category totals
          */
 
-        let food = 0;
-        let travel = 0;
-        let other = 0;
+        const categories = {
+
+            Food: 0,
+
+            Travel: 0,
+
+            Housing: 0,
+
+            Utilities: 0,
+
+            Other: 0
+
+        };
 
 
         data.expenses.forEach(expense => {
 
             const category =
-                expense.category.toLowerCase();
+                expense.category;
 
 
-            if (category === "food") {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    categories,
+                    category
+                )
+            ) {
 
-                food += expense.amount;
-
-            } else if (category === "travel") {
-
-                travel += expense.amount;
+                categories[category] +=
+                    Number(expense.amount);
 
             } else {
 
-                other += expense.amount;
+                categories.Other +=
+                    Number(expense.amount);
 
             }
 
@@ -209,23 +284,35 @@ async function loadSummary() {
         document.getElementById(
             "food-amount"
         ).textContent =
-            "₹" + food.toLocaleString("en-IN");
+            formatRupees(categories.Food);
 
 
         document.getElementById(
             "travel-amount"
         ).textContent =
-            "₹" + travel.toLocaleString("en-IN");
+            formatRupees(categories.Travel);
+
+
+        document.getElementById(
+            "housing-amount"
+        ).textContent =
+            formatRupees(categories.Housing);
+
+
+        document.getElementById(
+            "utilities-amount"
+        ).textContent =
+            formatRupees(categories.Utilities);
 
 
         document.getElementById(
             "other-amount"
         ).textContent =
-            "₹" + other.toLocaleString("en-IN");
+            formatRupees(categories.Other);
 
 
         /*
-         * Update recent expenses
+         * Recent expenses
          */
 
         const expenseList =
@@ -234,7 +321,10 @@ async function loadSummary() {
             );
 
 
-        if (data.expenses.length === 0) {
+        if (
+            !data.expenses ||
+            data.expenses.length === 0
+        ) {
 
             expenseList.innerHTML =
                 '<div class="empty-state">' +
@@ -242,6 +332,7 @@ async function loadSummary() {
                 '</div>';
 
             return;
+
         }
 
 
@@ -251,24 +342,31 @@ async function loadSummary() {
         data.expenses
             .slice()
             .reverse()
-            .slice(0, 5)
+            .slice(0, 8)
             .forEach(expense => {
 
                 const row =
                     document.createElement("div");
+
 
                 row.className =
                     "table-row";
 
 
                 row.innerHTML = `
-                    <span>${expense.item}</span>
-
-                    <span>${expense.category}</span>
 
                     <span>
-                        ₹${expense.amount.toLocaleString("en-IN")}
+                        ${escapeHtml(expense.item)}
                     </span>
+
+                    <span>
+                        ${escapeHtml(expense.category)}
+                    </span>
+
+                    <span>
+                        ${formatRupees(expense.amount)}
+                    </span>
+
                 `;
 
 
@@ -285,11 +383,28 @@ async function loadSummary() {
         );
 
     }
+
 }
 
 
 /*
- * Send message when button is clicked.
+ * Prevent HTML injection
+ */
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = value;
+
+    return div.innerHTML;
+
+}
+
+
+/*
+ * Button click
  */
 
 sendButton.addEventListener(
@@ -299,7 +414,7 @@ sendButton.addEventListener(
 
 
 /*
- * Send message when Enter is pressed.
+ * Enter key
  */
 
 input.addEventListener(
@@ -317,7 +432,7 @@ input.addEventListener(
 
 
 /*
- * Load dashboard when page opens.
+ * Initial dashboard load
  */
 
 loadSummary();

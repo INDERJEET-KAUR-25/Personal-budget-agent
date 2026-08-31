@@ -2,240 +2,371 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Personal Budget Agent</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-<div class="app">
+    <div class="app-container">
 
-    <!-- SIDEBAR -->
+        <!-- Sidebar -->
+        <aside class="sidebar">
 
-    <aside class="sidebar">
-
-        <div class="logo">
-            <div class="logo-icon">₹</div>
-
-            <div>
-                <h2>Budget Agent</h2>
-                <span>AI Financial Assistant</span>
-            </div>
-        </div>
-
-
-        <nav>
-
-            <button class="nav-item active">
-                <span>⌂</span>
-                Dashboard
-            </button>
-
-            <button class="nav-item">
-                <span>₹</span>
-                Expenses
-            </button>
-
-            <button class="nav-item">
-                <span>◉</span>
-                Analytics
-            </button>
-
-            <button class="nav-item">
-                <span>✦</span>
-                AI Assistant
-            </button>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <div class="ai-status">
-
-                <span class="status-dot"></span>
+            <div class="brand">
+                <div class="brand-icon">₹</div>
 
                 <div>
-                    <strong>AI Agent Online</strong>
-                    <small>GPT-4.1-mini</small>
+                    <h2>Budget Agent</h2>
+                    <p>AI Financial Assistant</p>
+                </div>
+            </div>
+
+
+            <nav class="navigation">
+
+                <button class="nav-item active">
+                    <span>▣</span>
+                    Dashboard
+                </button>
+
+                
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+
+                    <div>
+                        <strong>AI Agent Online</strong>
+                        <small>GPT-4.1-mini</small>
+                    </div>
                 </div>
 
             </div>
 
-        </div>
-
-    </aside>
+        </aside>
 
 
-    <!-- MAIN CONTENT -->
+        <!-- Main content -->
+        <main class="main-content">
 
-    <main class="main">
-
-        <header class="topbar">
-
-            <div>
-                <h1>Dashboard</h1>
-
-                <p>
-                    Welcome back! Here's your budget overview.
-                </p>
-            </div>
-
-            <div class="budget-badge">
-                Monthly Budget: <strong>₹15,000</strong>
-            </div>
-
-        </header>
-
-
-        <!-- SUMMARY CARDS -->
-
-        <section class="cards">
-
-            <div class="card">
-
-                <div class="card-icon budget-icon">
-                    ₹
-                </div>
+            <!-- Header -->
+            <header class="topbar">
 
                 <div>
+                    <h1>Personal Budget</h1>
 
-                    <span>Total Budget</span>
+                    <p>
+                        Track your spending with your AI-powered budget assistant.
+                    </p>
+                </div>
 
-                    <h2>₹15,000</h2>
+
+                <div class="header-badge">
+                    <span class="status-dot"></span>
+                    Agent Connected
+                </div>
+
+            </header>
+
+
+            <!-- Summary cards -->
+            <section class="summary-grid">
+
+                <div class="summary-card">
+
+                    <div class="card-label">
+                        <span>Total Budget</span>
+                        <span class="card-icon">₹</span>
+                    </div>
+
+                    <h2 id="total-budget">₹15,000</h2>
+
+                    <p class="card-description">
+                        Monthly budget
+                    </p>
 
                 </div>
 
-            </div>
 
+                <div class="summary-card">
 
-            <div class="card">
-
-                <div class="card-icon spent-icon">
-                    ↗
-                </div>
-
-                <div>
-
-                    <span>Total Spent</span>
+                    <div class="card-label">
+                        <span>Total Spent</span>
+                        <span class="card-icon">↗</span>
+                    </div>
 
                     <h2 id="total-spent">₹0</h2>
 
-                </div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon remaining-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <span>Remaining</span>
-
-                    <h2 id="remaining-budget">
-                        ₹15,000
-                    </h2>
+                    <p class="card-description">
+                        Your current spending
+                    </p>
 
                 </div>
 
-            </div>
 
-        </section>
+                <div class="summary-card">
 
-
-        <!-- CONTENT GRID -->
-
-        <section class="content-grid">
-
-
-            <!-- SPENDING -->
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <div>
-                        <h2>Spending Overview</h2>
-                        <p>Track your recent spending</p>
+                    <div class="card-label">
+                        <span>Remaining</span>
+                        <span class="card-icon">✓</span>
                     </div>
 
-                    <span class="month">
-                        This Month
-                    </span>
+                    <h2 id="remaining-budget">₹15,000</h2>
+
+                    <p class="card-description">
+                        Available to spend
+                    </p>
 
                 </div>
 
 
-                <div class="spending-content">
+                <div class="summary-card">
 
-                    <div class="donut">
+                    <div class="card-label">
+                        <span>Budget Used</span>
+                        <span class="card-icon">%</span>
+                    </div>
 
-                        <div class="donut-center">
+                    <h2 id="percentage">0%</h2>
 
-                            <strong id="percentage">
-                                0%
+                    <p class="card-description">
+                        Of your total budget
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- Dashboard content -->
+            <section class="dashboard-grid">
+
+
+                <!-- Budget progress -->
+                <div class="panel budget-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Budget Overview</h3>
+
+                            <p>
+                                Monitor how much of your budget you've used.
+                            </p>
+                        </div>
+
+                        <span class="panel-tag">
+                            Monthly
+                        </span>
+
+                    </div>
+
+
+                    <div class="budget-overview">
+
+                        <div class="donut-container">
+
+                            <div class="donut">
+
+                                <div class="donut-center">
+
+                                    <strong id="percentage-center">
+                                        0%
+                                    </strong>
+
+                                    <span>Used</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="budget-details">
+
+                            <div class="budget-number">
+                                <span>Spent</span>
+
+                                <strong id="spent-overview">
+                                    ₹0
+                                </strong>
+                            </div>
+
+
+                            <div class="budget-number">
+                                <span>Remaining</span>
+
+                                <strong id="remaining-overview">
+                                    ₹15,000
+                                </strong>
+                            </div>
+
+
+                            <div class="progress-container">
+
+                                <div class="progress-bar">
+
+                                    <div
+                                        class="progress-fill"
+                                        id="progress-fill">
+                                    </div>
+
+                                </div>
+
+                                <div class="progress-labels">
+
+                                    <span>₹0</span>
+
+                                    <span>
+                                        ₹15,000
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Category spending -->
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Spending by Category</h3>
+
+                            <p>
+                                See where your money is going.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="category-list">
+
+
+                        <div class="category-item">
+
+                            <div class="category-info">
+
+                                <div class="category-icon food">
+                                    F
+                                </div>
+
+                                <div>
+                                    <strong>Food</strong>
+                                    <small>Groceries & meals</small>
+                                </div>
+
+                            </div>
+
+                            <strong id="food-amount">
+                                ₹0
                             </strong>
 
-                            <span>Used</span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="categories">
-
-                        <div class="category">
-
-                            <span class="category-dot food"></span>
-
-                            <div>
-                                <strong>Food</strong>
-                                <small id="food-amount">
-                                    ₹0
-                                </small>
-                            </div>
-
                         </div>
 
 
-                        <div class="category">
+                        <div class="category-item">
 
-                            <span class="category-dot travel"></span>
+                            <div class="category-info">
 
-                            <div>
-                                <strong>Travel</strong>
-                                <small id="travel-amount">
-                                    ₹0
-                                </small>
+                                <div class="category-icon travel">
+                                    T
+                                </div>
+
+                                <div>
+                                    <strong>Travel</strong>
+                                    <small>Transport & fuel</small>
+                                </div>
+
                             </div>
+
+                            <strong id="travel-amount">
+                                ₹0
+                            </strong>
 
                         </div>
 
 
-                        <div class="category">
+                        <div class="category-item">
 
-                            <span class="category-dot other"></span>
+                            <div class="category-info">
 
-                            <div>
-                                <strong>Other</strong>
-                                <small id="other-amount">
-                                    ₹0
-                                </small>
+                                <div class="category-icon housing">
+                                    H
+                                </div>
+
+                                <div>
+                                    <strong>Housing</strong>
+                                    <small>Rent & housing</small>
+                                </div>
+
                             </div>
+
+                            <strong id="housing-amount">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="category-item">
+
+                            <div class="category-info">
+
+                                <div class="category-icon utilities">
+                                    U
+                                </div>
+
+                                <div>
+                                    <strong>Utilities</strong>
+                                    <small>Bills & internet</small>
+                                </div>
+
+                            </div>
+
+                            <strong id="utilities-amount">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="category-item">
+
+                            <div class="category-info">
+
+                                <div class="category-icon other">
+                                    O
+                                </div>
+
+                                <div>
+                                    <strong>Other</strong>
+                                    <small>Other expenses</small>
+                                </div>
+
+                            </div>
+
+                            <strong id="other-amount">
+                                ₹0
+                            </strong>
 
                         </div>
 
@@ -243,135 +374,138 @@
 
                 </div>
 
-            </div>
+
+            </section>
 
 
-            <!-- AI ASSISTANT -->
+            <!-- Bottom section -->
+            <section class="bottom-grid">
 
-            <div class="panel assistant-panel">
 
-                <div class="panel-header">
+                <!-- Recent transactions -->
+                <div class="panel transactions-panel">
 
-                    <div>
+                    <div class="panel-header">
 
-                        <h2>AI Assistant</h2>
+                        <div>
+                            <h3>Recent Expenses</h3>
 
-                        <p>
-                            Ask anything about your budget
-                        </p>
+                            <p>
+                                Your latest transactions.
+                            </p>
+                        </div>
 
                     </div>
 
-                    <span class="online">
-                        ● Online
-                    </span>
+
+                    <div class="transaction-header">
+
+                        <span>Expense</span>
+                        <span>Category</span>
+                        <span>Amount</span>
+
+                    </div>
+
+
+                    <div id="expense-list">
+
+                        <div class="empty-state">
+                            No expenses added yet.
+                        </div>
+
+                    </div>
 
                 </div>
 
 
-                <div id="chat-box" class="chat-box">
+                <!-- AI Assistant -->
+                <div class="panel chat-panel">
 
-                    <div class="message bot">
+                    <div class="chat-header">
 
-                        <div class="avatar">
+                        <div class="ai-avatar">
                             AI
                         </div>
 
-                        <div class="bubble">
+                        <div>
 
-                            Hello! 👋 I'm your Personal Budget
-                            Agent.
+                            <h3>Budget Assistant</h3>
 
-                            <br><br>
-
-                            You can tell me about your expenses
-                            or ask about your budget.
-
-                            <br><br>
-
-                            Try:
-                            <strong>
-                                "I spent ₹1200 on groceries"
-                            </strong>
+                            <p>
+                                Ask me anything about your budget.
+                            </p>
 
                         </div>
 
                     </div>
 
-                </div>
+
+                    <div id="chat-box" class="chat-box">
+
+                        <div class="message bot">
+
+                            <div class="avatar">
+                                AI
+                            </div>
+
+                            <div class="bubble">
+                                Hi! I'm your personal budget
+                                assistant. Tell me about an
+                                expense or ask about your spending.
+                            </div>
+
+                        </div>
+
+                    </div>
 
 
-                <div class="chat-input-area">
+                    <!-- Quick prompts -->
+                    <div class="quick-prompts">
 
-                    <input
-                        type="text"
-                        id="message-input"
-                        placeholder="Tell me about your expenses..."
-                        autocomplete="off"
-                    >
+                        <button
+                            onclick="quickPrompt('How much have I spent?')">
+                            💰 Spending
+                        </button>
 
-                    <button id="send-button">
-                        Send
-                    </button>
+                        <button
+                            onclick="quickPrompt('How much budget do I have left?')">
+                            🎯 Budget left
+                        </button>
 
-                </div>
+                        <button
+                            onclick="quickPrompt('Show my spending summary')">
+                            📊 Summary
+                        </button>
 
-            </div>
-
-        </section>
-
-
-        <!-- RECENT EXPENSES -->
-
-        <section class="panel expenses-panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <h2>Recent Expenses</h2>
-
-                    <p>Your latest transactions</p>
-
-                </div>
-
-                <button class="view-all">
-                    View All
-                </button>
-
-            </div>
+                    </div>
 
 
-            <div class="expense-table">
+                    <!-- Chat input -->
+                    <div class="chat-input">
 
-                <div class="table-row table-heading">
+                        <input
+                            type="text"
+                            id="message-input"
+                            placeholder="Ask about your budget..."
+                            autocomplete="off"
+                        >
 
-                    <span>Expense</span>
-                    <span>Category</span>
-                    <span>Amount</span>
+                        <button id="send-button">
+                            Send
+                        </button>
 
-                </div>
-
-
-                <div id="expense-list">
-
-                    <div class="empty-state">
-                        No expenses added yet.
                     </div>
 
                 </div>
 
-            </div>
+            </section>
 
-        </section>
+        </main>
 
-    </main>
-
-</div>
+    </div>
 
 
-<script src="{{ url_for('static', filename='script.js') }}">
-</script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 
