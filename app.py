@@ -1,33 +1,62 @@
-from memory import BudgetMemory
-from tools import add_expense, get_summary
+from flask import Flask, render_template, request, jsonify
+
+from agent import run_agent, memory
+
+app = Flask(__name__)
 
 
-memory = BudgetMemory()
+@app.route("/")
+def home():
+    return render_template("index.html")
 
-# Set budget
-memory.set_budget(15000)
 
-# Add expenses
-result1 = add_expense(
-    memory,
-    "Groceries",
-    1200,
-    "Food"
-)
+@app.route("/chat", methods=["POST"])
+def chat():
 
-result2 = add_expense(
-    memory,
-    "Bus",
-    500,
-    "Travel"
-)
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
 
-print(result1)
-print(result2)
+    if not user_message:
+        return jsonify({
+            "response": "Please enter a message."
+        })
 
-# Get summary
-summary = get_summary(memory)
+    try:
 
-print("\nSUMMARY")
-print("Total spent:", summary["total_spent"])
-print("Remaining budget:", summary["remaining_budget"])
+        response = run_agent(
+            user_message,
+            thread_id="web-user-1"
+        )
+
+        return jsonify({
+            "response": response
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "response": f"Error: {str(e)}"
+        }), 500
+
+
+@app.route("/summary")
+def summary():
+
+    total_spent = memory.get_total_spent()
+    remaining = memory.get_remaining_budget()
+
+    return jsonify({
+        "budget": memory.budget,
+        "total_spent": total_spent,
+        "remaining_budget": remaining,
+        "expenses": memory.get_expenses()
+    })
+
+
+if __name__ == "__main__":
+
+    app.run(
+        debug=True,
+        host="127.0.0.1",
+        port=5000
+    )
